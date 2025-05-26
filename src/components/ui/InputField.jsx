@@ -11,6 +11,7 @@ const InputField = ({
   disabled = false,
   selectPlaceholder = null,
   noOptionsMessage = null,
+  error,
 }) => {
   // สร้าง className สำหรับ select หรือ input
   const baseClasses =
@@ -63,6 +64,7 @@ const InputField = ({
           disabled={disabled}
         />
       )}
+      {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
     </div>
   );
 };

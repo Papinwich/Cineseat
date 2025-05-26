@@ -6,9 +6,20 @@ import InputField from '@/components/ui/InputField';
 import BtnPrime from '@/components/ui/BtnPrime';
 import { toast } from 'react-toastify';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { screenSchema } from '@/validation/validationSchema';
+
 const FormScreen = () => {
   const { token, fetchCinemas, cinemaList, fetchScreens } = useStore();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(screenSchema),
+  });
   useEffect(() => {
     fetchCinemas();
   }, []);
@@ -36,11 +47,12 @@ const FormScreen = () => {
           elementType="select"
           name="cinemaId"
           register={register}
-          selectPlaceholder="Please select a cinema"
+          selectPlaceholder="Select a cinema"
           options={cinemaList.map((item) => ({
             value: item.id,
             label: item.name,
           }))}
+          error={errors.cinemaId}
         />
 
         <InputField
@@ -49,6 +61,7 @@ const FormScreen = () => {
           name="name"
           register={register}
           placeholder="Enter Screen Name"
+          error={errors.name}
         />
 
         <InputField

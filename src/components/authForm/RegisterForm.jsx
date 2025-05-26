@@ -6,8 +6,20 @@ import InputField from '../ui/InputField';
 import BtnPrime from '../ui/BtnPrime';
 import { useNavigate } from 'react-router-dom';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { registerSchema } from '@/validation/validationSchema';
+
 const RegisterForm = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(registerSchema),
+  });
   const navigate = useNavigate();
 
   const inputFields = [
@@ -46,6 +58,7 @@ const RegisterForm = () => {
             type={field.type}
             register={register}
             name={field.name}
+            error={errors[field.name]}
           />
         ))}
 

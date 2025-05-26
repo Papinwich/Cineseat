@@ -34,7 +34,7 @@ const EditShowtime = ({ showtime, onClose, onUpdate }) => {
       date: formatDateForInput(showtime.datetime),
     },
   });
-  console.log(showtime);
+  // console.log(showtime);
 
   // สร้าง options สำหรับเวลา
   const timeOptions = Array.from({ length: 24 }).flatMap((_, hour) =>
@@ -52,7 +52,7 @@ const EditShowtime = ({ showtime, onClose, onUpdate }) => {
 
   const onSubmit = async (data) => {
     try {
-      console.log('hello', data);
+      // console.log('hello', data);
       const res = await updateShowtime(token, showtime.id, data);
       toast.success(res.data.message);
       onUpdate();

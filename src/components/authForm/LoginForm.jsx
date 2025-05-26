@@ -7,10 +7,21 @@ import BtnSecond from '../ui/BtnSecond';
 import BtnPrime from '../ui/BtnPrime';
 import InputField from '../ui/InputField';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { loginSchema } from '@/validation/validationSchema';
+
 const Login = () => {
   const { login } = useStore();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(loginSchema),
+  });
 
   const inputFields = [
     { label: 'Email', name: 'email', type: 'email' },
@@ -55,6 +66,7 @@ const Login = () => {
             type={field.type}
             register={register}
             name={field.name}
+            error={errors[field.name]}
           />
         ))}
 

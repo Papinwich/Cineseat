@@ -129,7 +129,7 @@ const MovieShowtimeDetail = () => {
   }
 
   return (
-    <div className="mx-auto max-w-6xl ">
+    <div className="mx-auto max-w-7xl pb-10">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Left Section */}
         <section className="flex-2/5 flex flex-col items-center">

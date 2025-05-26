@@ -6,9 +6,22 @@ import InputField from '@/components/ui/InputField';
 import BtnPrime from '@/components/ui/BtnPrime';
 import { toast } from 'react-toastify';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { movieSchema } from '@/validation/validationSchema';
+
 const FormMovie = () => {
   const { token, fetchMovies } = useStore();
-  const { register, handleSubmit, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(movieSchema),
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -82,6 +95,7 @@ const FormMovie = () => {
               name="title"
               register={register}
               disabled={isLoading}
+              error={errors.title}
             />
 
             <InputField
@@ -90,6 +104,7 @@ const FormMovie = () => {
               name="description"
               register={register}
               disabled={isLoading}
+              error={errors.description}
             />
 
             <div className="grid grid-cols-2 gap-4">
@@ -99,6 +114,7 @@ const FormMovie = () => {
                 name="release_date"
                 register={register}
                 disabled={isLoading}
+                error={errors.release_date}
               />
 
               <InputField
@@ -107,6 +123,7 @@ const FormMovie = () => {
                 name="language"
                 register={register}
                 disabled={isLoading}
+                error={errors.language}
               />
 
               <InputField
@@ -115,6 +132,7 @@ const FormMovie = () => {
                 name="rate"
                 register={register}
                 disabled={isLoading}
+                error={errors.rate}
               />
 
               <InputField
@@ -123,6 +141,7 @@ const FormMovie = () => {
                 name="duration"
                 register={register}
                 disabled={isLoading}
+                error={errors.duration}
               />
             </div>
 

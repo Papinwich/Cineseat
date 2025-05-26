@@ -6,6 +6,10 @@ import InputField from '@/components/ui/InputField';
 import BtnPrime from '@/components/ui/BtnPrime';
 import { toast } from 'react-toastify';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { showtimeSchema } from '@/validation/validationSchema';
+
 const FormShowtime = () => {
   const {
     token,
@@ -16,7 +20,15 @@ const FormShowtime = () => {
     movieList,
     fetchShowtimes,
   } = useStore();
-  const { register, handleSubmit, watch, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(showtimeSchema),
+  });
 
   useEffect(() => {
     fetchCinemas();
@@ -65,11 +77,12 @@ const FormShowtime = () => {
           elementType="select"
           name="cinemaId"
           register={register}
-          selectPlaceholder="Please select a cinema"
+          selectPlaceholder="Select a cinema"
           options={cinemaList.map((item) => ({
             value: item.id,
             label: item.name,
           }))}
+          error={errors.cinemaId}
         />
 
         {/* Select Screen */}
@@ -78,12 +91,13 @@ const FormShowtime = () => {
           elementType="select"
           name="screenId"
           register={register}
-          selectPlaceholder="Please select a screen"
+          selectPlaceholder="Select a screen"
           noOptionsMessage="No screen available"
           options={filteredScreenList.map((item) => ({
             value: item.id,
             label: item.name,
           }))}
+          error={errors.screenId}
         />
 
         {/* Select Movie */}
@@ -92,11 +106,12 @@ const FormShowtime = () => {
           elementType="select"
           name="movieId"
           register={register}
-          selectPlaceholder="Please select a movie"
+          selectPlaceholder="Select a movie"
           options={movieList.map((item) => ({
             value: item.id,
             label: item.title,
           }))}
+          error={errors.movieId}
         />
 
         {/* Select Time */}
@@ -105,12 +120,19 @@ const FormShowtime = () => {
           elementType="select"
           name="time"
           register={register}
-          selectPlaceholder="Please select time"
+          selectPlaceholder="Select time"
           options={timeOptions}
+          error={errors.time}
         />
 
         {/* Select Date */}
-        <InputField label="Date" type="date" name="date" register={register} />
+        <InputField
+          label="Date"
+          type="date"
+          name="date"
+          register={register}
+          error={errors.date}
+        />
 
         <BtnPrime ButtonText="Add Showtime" type="submit" />
         {/* <button

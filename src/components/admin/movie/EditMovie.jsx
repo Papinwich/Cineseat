@@ -5,6 +5,10 @@ import { updateMovie } from '@/api/Movie';
 import InputField from '@/components/ui/InputField';
 import { toast } from 'react-toastify';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { movieSchema } from '@/validation/validationSchema';
+
 const EditMovie = ({ movie, onClose, onUpdate }) => {
   const { token } = useStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +20,12 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
     return dateString.substring(0, 10);
   };
 
-  const { handleSubmit, register, watch } = useForm({
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       title: movie.title,
       description: movie.description,
@@ -25,6 +34,8 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
       rate: movie.rate,
       duration: movie.duration,
     },
+    resolver: yupResolver(movieSchema),
+    mode: 'onChange',
   });
 
   const imageFile = watch('image');
@@ -96,15 +107,8 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
                 name="title"
                 register={register}
                 disabled={isLoading}
+                error={errors.title}
               />
-
-              {/* <label className="font-bold">Title</label>
-              <input
-                type="text"
-                className="border p-2 mb-3 rounded"
-                {...register('title')}
-                disabled={isLoading}
-              /> */}
 
               <InputField
                 label="Description"
@@ -112,14 +116,8 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
                 name="description"
                 register={register}
                 disabled={isLoading}
+                error={errors.description}
               />
-
-              {/* <label className="font-bold">Description</label>
-              <textarea
-                className="border p-2 mb-3 rounded h-20"
-                {...register('description')}
-                disabled={isLoading}
-              /> */}
 
               <div className="grid grid-cols-2 gap-4">
                 <InputField
@@ -128,6 +126,7 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
                   name="release_date"
                   register={register}
                   disabled={isLoading}
+                  error={errors.release_date}
                 />
 
                 <InputField
@@ -136,6 +135,7 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
                   name="language"
                   register={register}
                   disabled={isLoading}
+                  error={errors.language}
                 />
 
                 <InputField
@@ -144,6 +144,7 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
                   name="rate"
                   register={register}
                   disabled={isLoading}
+                  error={errors.rate}
                 />
 
                 <InputField
@@ -152,50 +153,9 @@ const EditMovie = ({ movie, onClose, onUpdate }) => {
                   name="duration"
                   register={register}
                   disabled={isLoading}
+                  error={errors.duration}
                 />
               </div>
-
-              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="font-bold">Release date</label>
-                  <input
-                    type="date"
-                    className="border p-2 mb-3 rounded w-full"
-                    {...register('release_date')}
-                    disabled={isLoading}
-                  />
-                </div>
-
-                <div>
-                  <label className="font-bold">Language</label>
-                  <input
-                    type="text"
-                    className="border p-2 mb-3 rounded w-full"
-                    {...register('language')}
-                    disabled={isLoading}
-                  />
-                </div>
-
-                <div>
-                  <label className="font-bold">Rate</label>
-                  <input
-                    type="text"
-                    className="border p-2 mb-3 rounded w-full"
-                    {...register('rate')}
-                    disabled={isLoading}
-                  />
-                </div>
-
-                <div>
-                  <label className="font-bold">Duration (minutes)</label>
-                  <input
-                    type="number"
-                    className="border p-2 mb-3 rounded w-full"
-                    {...register('duration')}
-                    disabled={isLoading}
-                  />
-                </div>
-              </div> */}
 
               <label className="font-bold mt-4">Image</label>
               <input

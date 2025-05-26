@@ -5,15 +5,25 @@ import { updateScreen } from '@/api/Screen';
 import { toast } from 'react-toastify';
 import InputField from '@/components/ui/InputField';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { screenSchema } from '@/validation/validationSchema';
+
 const EditScreen = ({ screen, onClose, onUpdate }) => {
   const { token, cinemaList } = useStore();
-  const { handleSubmit, register } = useForm({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       cinemaId: screen.cinema.id,
       name: screen.name,
       type: screen.type,
       capacity: screen.capacity,
     },
+    resolver: yupResolver(screenSchema),
+    mode: 'onChange',
   });
 
   const onSubmit = async (data) => {
@@ -52,6 +62,7 @@ const EditScreen = ({ screen, onClose, onUpdate }) => {
             name="name"
             register={register}
             placeholder="Enter Screen Name"
+            error={errors.name}
           />
 
           <InputField
@@ -78,6 +89,10 @@ const EditScreen = ({ screen, onClose, onUpdate }) => {
               { value: 'lg', label: 'Large (120 seats)' },
             ]}
           />
+          <p className="text-xs mt-1 text-yellow-800">
+            Warning: Changing the seat capacity will delete and recreate all
+            seats. Linked data may be lost. Proceed with caution.
+          </p>
 
           <div className="flex justify-end mt-4">
             <button

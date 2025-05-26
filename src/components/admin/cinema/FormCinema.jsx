@@ -6,9 +6,21 @@ import InputField from '@/components/ui/InputField';
 import BtnPrime from '@/components/ui/BtnPrime';
 import { toast } from 'react-toastify';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { cinemaSchema } from '@/validation/validationSchema';
+
 const FormCinema = () => {
   const { token, fetchCinemas } = useStore();
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(cinemaSchema),
+  });
 
   const onSubmit = async (data) => {
     try {
@@ -35,6 +47,7 @@ const FormCinema = () => {
           register={register}
           name="name"
           placeholder="Enter Cinema Name"
+          error={errors.name}
         />
 
         <InputField
@@ -43,6 +56,7 @@ const FormCinema = () => {
           register={register}
           name="location"
           placeholder="Enter Location"
+          error={errors.location}
         />
 
         <BtnPrime ButtonText="Add Cinema" type="submit" />

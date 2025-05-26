@@ -5,13 +5,23 @@ import { updateCinema } from '@/api/Cinema';
 import { toast } from 'react-toastify';
 import InputField from '@/components/ui/InputField';
 
+// Validation
+import { yupResolver } from '@hookform/resolvers/yup';
+import { cinemaSchema } from '@/validation/validationSchema';
+
 const EditCinema = ({ cinema, onClose, onUpdate }) => {
   const { token } = useStore();
-  const { handleSubmit, register } = useForm({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       name: cinema.name,
       location: cinema.location,
     },
+    resolver: yupResolver(cinemaSchema),
+    mode: 'onChange',
   });
 
   const onSubmit = async (data) => {
@@ -38,6 +48,7 @@ const EditCinema = ({ cinema, onClose, onUpdate }) => {
             register={register}
             name="name"
             placeholder="Enter Cinema Name"
+            error={errors.name}
           />
 
           <InputField
@@ -46,6 +57,7 @@ const EditCinema = ({ cinema, onClose, onUpdate }) => {
             register={register}
             name="location"
             placeholder="Enter Location"
+            error={errors.location}
           />
 
           <div className="flex justify-end mt-4">
