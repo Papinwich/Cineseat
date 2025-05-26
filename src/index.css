@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #344e41;
+  --color-secondary: #3a5a40;
+  --color-creme: #dad7cd;
+}
+
+:root {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #dad7cd;
+}
