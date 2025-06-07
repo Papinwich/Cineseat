@@ -192,16 +192,6 @@ const MovieShowtimeDetail = () => {
               {/* Date */}
               <div>
                 <HeadText text={'DATE'} />
-                {/* <div className="flex flex-wrap gap-2 mt-2">
-                  {dates.map((date, index) => (
-                    <DateSelector
-                      name={date.date}
-                      key={index}
-                      onActive={() => handleDateClick(date.date)}
-                      isActive={activeDate === date.date}
-                    />
-                  ))}
-                </div> */}
                 <DateScroller
                   dates={dates}
                   activeDate={activeDate}

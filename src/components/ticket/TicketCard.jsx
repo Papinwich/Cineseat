@@ -4,7 +4,7 @@ import { QRCodeSVG } from 'qrcode.react';
 
 const TicketCard = ({ ticket }) => {
   return (
-    <div className="flex min-w-100 bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+    <div className="flex w-120 bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
       <div className="flex items-center justify-center bg-primary/80">
         <img
           className="-rotate-90 w-12 h-auto"
