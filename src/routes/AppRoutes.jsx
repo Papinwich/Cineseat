@@ -1,31 +1,38 @@
-import Layout from '@/layouts/Layout';
-import LayoutAdmin from '@/layouts/LayoutAdmin';
-import Movies from '@/pages/Movies';
-import Admin from '@/pages/admin/admin';
-import Home from '@/pages/Home';
-import Notfound from '@/pages/Notfound';
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router';
-import Cinema from '@/pages/admin/Cinema';
-import Register from '@/pages/Register';
-import Login from '@/pages/Login';
-import Cinemas from '@/pages/Cinemas';
+import { BrowserRouter, Routes, Route } from 'react-router';
+
+import ScrollToTop from './ScrollToTop';
 import ProtectRoute from './ProtectRoute';
 import ProtectAdmin from './ProtectAdmin';
-import Screen from '@/pages/admin/Screen';
-import Movie from '@/pages/admin/Movie';
-import Showtime from '@/pages/admin/Showtime';
+
+import Layout from '@/layouts/Layout';
+import LayoutAdmin from '@/layouts/LayoutAdmin';
+
+import Home from '@/pages/Home';
+import Movies from '@/pages/Movies';
 import MovieShowtimeDetail from '@/components/movie/MovieShowtimeDetail';
+import Cinemas from '@/pages/Cinemas';
+import Register from '@/pages/Register';
+import Login from '@/pages/Login';
+import Notfound from '@/pages/Notfound';
+
 import Checkout from '@/pages/Checkout';
 import PaymentComplete from '@/pages/PaymentComplete';
 import MyTickets from '@/pages/MyTickets';
+import UserBooking from '@/pages/UserBooking';
+
+import Admin from '@/pages/admin/admin';
+import Cinema from '@/pages/admin/Cinema';
+import Screen from '@/pages/admin/Screen';
+import Movie from '@/pages/admin/Movie';
+import Showtime from '@/pages/admin/Showtime';
 import User from '@/pages/admin/User';
 import Booking from '@/pages/admin/Booking';
-import UserBooking from '@/pages/UserBooking';
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Public */}
         <Route element={<Layout />}>
@@ -39,7 +46,7 @@ const AppRoutes = () => {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
         </Route>
-        {/* user */}
+        {/* User */}
         <Route element={<ProtectRoute element={<Layout />} />}>
           <Route path="checkout/:bookingId" element={<Checkout />} />
           <Route path="return" element={<PaymentComplete />} />

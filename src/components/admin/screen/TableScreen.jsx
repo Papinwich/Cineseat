@@ -5,6 +5,7 @@ import EditScreen from './EditScreen';
 import ConfirmModal from '@/components/ui/ConfimModal';
 import { deleteScreen } from '@/api/Screen';
 import ActionButtons from '@/components/ui/ActionButtons';
+import TablePagination from '@/components/ui/TablePagination';
 
 const TableScreen = () => {
   const { screenList, fetchScreens, token } = useStore();
@@ -35,37 +36,41 @@ const TableScreen = () => {
     setShowModal(true);
   };
 
+  //----- Pagination -----//
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(screenList.length / itemsPerPage);
+  const currentData = screenList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  //---------------------//
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <h2 className="text-2xl font-bold mb-4">Screen List</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 shadow-md">
-          <thead>
-            <tr className="bg-gray-200 text-gray-700 truncate">
-              <th className="border border-gray-300 px-4 py-2 w-16">ID</th>
-              <th className="border border-gray-300 px-4 py-2 ">Cinema</th>
-              <th className="border border-gray-300 px-4 py-2 ">Screen</th>
-              <th className="border border-gray-300 px-4 py-2 ">Screen Type</th>
-              <th className="border border-gray-300 px-4 py-2 ">Capacity</th>
-              <th className="border border-gray-300 px-4 py-2 w-48">Actions</th>
+
+      {/* Table */}
+      <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <table className="min-w-full bg-white text-sm text-left text-gray-700">
+          <thead className="bg-gray-100 border-b border-gray-300 text-xs  text-gray-600 truncate">
+            <tr>
+              <th className="py-4 px-2 text-center w-16">ID</th>
+              <th className="py-4 px-2">Cinema</th>
+              <th className="py-4 px-2">Screen</th>
+              <th className="py-4 px-2">Screen Type</th>
+              <th className="py-4 px-2">Capacity</th>
+              <th className="py-4 px-2 w-32 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {screenList.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-100 truncate">
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  {item.id}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {item.cinema.name}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {item.name}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {item.type}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
+          <tbody className="divide-y divide-gray-100">
+            {currentData.map((item) => (
+              <tr key={item.id} className="hover:bg-gray-50 truncate">
+                <td className="p-2 text-center">{item.id}</td>
+                <td className="p-2">{item.cinema.name}</td>
+                <td className="p-2">{item.name}</td>
+                <td className="p-2">{item.type}</td>
+                <td className="p-2">
                   {
                     {
                       sm: 'Small (60s)',
@@ -74,7 +79,7 @@ const TableScreen = () => {
                     }[item.capacity]
                   }
                 </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
+                <td className="p-2">
                   <ActionButtons
                     item={item}
                     setSelectedItem={setSelectedScreen}
@@ -85,6 +90,14 @@ const TableScreen = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Pagination */}
+      <div className="mt-4">
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
       {/* Edite Screen */}
       {selectedScreen && (

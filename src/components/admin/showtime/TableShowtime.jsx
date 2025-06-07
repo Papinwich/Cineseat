@@ -7,6 +7,7 @@ import ConfirmModal from '@/components/ui/ConfimModal';
 import { deleteShowtime } from '@/api/Showtime';
 import dayjs from 'dayjs';
 import ActionButtons from '@/components/ui/ActionButtons';
+import TablePagination from '@/components/ui/TablePagination';
 
 const TableShowtime = () => {
   const {
@@ -96,6 +97,16 @@ const TableShowtime = () => {
     setShowModal(true);
   };
 
+  //----- Pagination -----//
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(filteredShowtimes.length / itemsPerPage);
+  const currentData = filteredShowtimes.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  //---------------------//
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <h2 className="text-2xl font-bold mb-4">Showtime List</h2>
@@ -143,53 +154,47 @@ const TableShowtime = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 shadow-md">
-          <thead>
-            <tr className="bg-gray-200 text-gray-700 truncate">
-              <th className="border border-gray-300 px-4 py-2 w-16">ID</th>
-              <th className="border border-gray-300 px-4 py-2">Cinema</th>
-              <th className="border border-gray-300 px-4 py-2">Screen</th>
-              <th className="border border-gray-300 px-4 py-2">Movie</th>
-              <th className="border border-gray-300 px-4 py-2">Date & Time</th>
-              <th className="border border-gray-300 px-4 py-2 w-48">Action</th>
+      <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <table className="min-w-full bg-white text-sm text-left text-gray-700">
+          <thead className="bg-gray-100 border-b border-gray-300 text-xs  text-gray-600 truncate">
+            <tr>
+              <th className="py-4 px-2 text-center w-16">ID</th>
+              <th className="py-4 px-2 min-w-40">Cinema</th>
+              <th className="py-4 px-2 min-w-40">Screen</th>
+              <th className="py-4 px-2">Movie</th>
+              <th className="py-4 px-2 min-w-36">Date & Time</th>
+              <th className="py-4 px-2 w-32 text-center">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-100">
             {showtimeList.length === 0 ? (
               <tr>
                 <td colSpan="7" className="text-center py-4">
                   Loading showtimes...
                 </td>
               </tr>
-            ) : filteredShowtimes.length === 0 ? (
+            ) : currentData.length === 0 ? (
               <tr>
                 <td colSpan="7" className="text-center py-4">
                   No showtimes available
                 </td>
               </tr>
             ) : (
-              filteredShowtimes.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-100 truncate">
-                  <td className="border border-gray-300 px-4 py-2 text-center">
-                    {item.id}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {item.screen.cinema.name}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
+              currentData.map((item) => (
+                <tr key={item.id} className="hover:bg-gray-50 truncate">
+                  <td className="p-2 text-center">{item.id}</td>
+                  <td className="p-2 ">{item.screen.cinema.name}</td>
+                  <td className="p-2 ">
                     {item.screen.name} ({item.screen.type})
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {item.Movie.title}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="p-2 ">{item.Movie.title}</td>
+                  <td className="p-2 ">
                     {/* {formatDateTime(item.datetime)} */}
                     {dayjs(item.datetime)
                       .format('D MMM YYYY HH:mm')
                       .toUpperCase()}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">
+                  <td className="p-2  text-center">
                     {/* <button
                       onClick={() => setSelectedShowtime(item)}
                       className="bg-blue-500 text-white px-3 py-1 rounded-md mr-2 hover:bg-blue-600"
@@ -213,6 +218,15 @@ const TableShowtime = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="mt-4">
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
       {/* Edite Showtime */}
       {selectedShowtime && (

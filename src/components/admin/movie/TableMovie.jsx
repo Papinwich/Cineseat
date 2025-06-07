@@ -7,6 +7,8 @@ import { deleteMovie, updateMovieStatus } from '@/api/Movie';
 import dayjs from 'dayjs';
 import ActionButtons from '@/components/ui/ActionButtons';
 import ViewDetailMovie from './ViewDetailMovie';
+import TablePagination from '@/components/ui/TablePagination';
+import { CirclePlay, OctagonX, CalendarFold } from 'lucide-react';
 
 const TableMovie = () => {
   const { movieList, fetchMovies, token } = useStore();
@@ -52,36 +54,42 @@ const TableMovie = () => {
     setSelectedMovieForView(movie);
   };
 
+  //----- Pagination -----//
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(movieList.length / itemsPerPage);
+  const currentData = movieList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  //---------------------//
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <h2 className="text-2xl font-bold mb-4">Movie List</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 shadow-md">
-          <thead>
-            <tr className="bg-gray-200 text-gray-700 truncate">
-              <th className="border border-gray-300 px-4 py-2 w-16">ID</th>
-              <th className="border border-gray-300 px-4 py-2">Image</th>
-              <th className="border border-gray-300 px-4 py-2">Title</th>
 
-              <th className="border border-gray-300 px-4 py-2 ">
-                Release Date
-              </th>
-              <th className="border border-gray-300 px-4 py-2">Language</th>
-              {/* <th className="border border-gray-300 px-4 py-2">Rate</th> */}
-              <th className="border border-gray-300 px-4 py-2">Duration</th>
-              <th className="border border-gray-300 px-4 py-2 ">
-                Choose Status
-              </th>
-              <th className="border border-gray-300 px-4 py-2 w-48">Actions</th>
+      {/* Table */}
+      <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <table className="min-w-full bg-white text-sm text-left text-gray-700">
+          <thead className="bg-gray-100 border-b border-gray-300 text-xs  text-gray-600 truncate">
+            <tr>
+              <th className="py-4 px-2 text-center w-16">ID</th>
+              <th className="py-4 px-2 min-w-20">Image</th>
+              <th className="py-4 px-2 min-w-80">Title</th>
+
+              <th className="py-4 px-2 min-w-30">Release Date</th>
+              <th className="py-4 px-2">Runtime</th>
+              <th className="py-4 px-2">Language</th>
+              <th className="py-4 px-2 ">Status</th>
+              <th className="py-4 px-2 w-40">Choose</th>
+              <th className="py-4 px-2 w-32 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {movieList.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-100 truncate">
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  {item.id}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
+          <tbody className="divide-y divide-gray-100">
+            {currentData.map((item) => (
+              <tr key={item.id} className="hover:bg-gray-50 truncate">
+                <td className="p-2 text-center">{item.id}</td>
+                <td className="p-2">
                   {item.image && (
                     <img
                       src={item.image.url}
@@ -90,24 +98,32 @@ const TableMovie = () => {
                     />
                   )}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {item.title}
-                </td>
-
-                <td className="border border-gray-300 px-4 py-2">
-                  {/* {item.release_date} */}
+                <td className="p-2">{item.title}</td>
+                <td className="p-2">
                   {dayjs(item.release_date).format('D MMM YYYY').toUpperCase()}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {item.language}
+                <td className="p-2">{item.duration}</td>
+                <td className="p-2">{item.language}</td>
+                <td className="p-2">
+                  <span
+                    className={`inline-flex items-center gap-1 p-2 text-xs rounded-full ${
+                      item.status === 'NOW_SHOWING'
+                        ? 'bg-green-100 text-green-800'
+                        : item.status === 'COMING_SOON'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {item.status === 'NOW_SHOWING' ? (
+                      <CirclePlay size={16} />
+                    ) : item.status === 'COMING_SOON' ? (
+                      <CalendarFold size={16} />
+                    ) : (
+                      <OctagonX size={16} />
+                    )}
+                  </span>
                 </td>
-                {/* <td className="border border-gray-300 px-4 py-2">
-                  {item.rate}
-                </td> */}
-                <td className="border border-gray-300 px-4 py-2">
-                  {item.duration}
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
+                <td className="p-2">
                   <select
                     value={item.status}
                     onChange={(e) => handleUpdateStatus(item, e)}
@@ -118,7 +134,7 @@ const TableMovie = () => {
                     <option value="COMING_SOON">Coming Soon</option>
                   </select>
                 </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
+                <td className="p-2">
                   <ActionButtons
                     item={item}
                     setSelectedItem={setSelectedMovie}
@@ -130,6 +146,14 @@ const TableMovie = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Pagination */}
+      <div className="mt-4">
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
 
       {selectedMovie && (

@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+export const OnRegister = async (data) => {
+  return await axios.post('http://localhost:8000/api/register', data);
+};
+
+export const login = async (data) => {
+  return await axios.post('http://localhost:8000/api/login', data);
+};
+
 export const currentUser = async (token) => {
   return await axios.post(
     'http://localhost:8000/api/current-user',
@@ -21,8 +29,4 @@ export const currentAdmin = async (token) => {
       },
     }
   );
-};
-
-export const login = async (data) => {
-  return await axios.post('http://localhost:8000/api/login', data);
 };

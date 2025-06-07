@@ -27,6 +27,10 @@ const Cinemas = () => {
     }
   }, [activeCinema]);
 
+  const sortedMovies = [...filteredMovies].sort(
+    (a, b) => new Date(a.release_date) - new Date(b.release_date)
+  );
+
   return (
     //container
     <div className="max-w-7xl mx-auto pb-10">
@@ -43,7 +47,22 @@ const Cinemas = () => {
         onTabChange={setFilteredMovies}
       />
       {/* Movie Grid */}
-      <MovieGrid movies={filteredMovies} />
+      {sortedMovies.length === 0 ? (
+        <div className="flex flex-col items-center justify-start h-screen text-center px-4 pt-10 sm:pt-20">
+          <h1 className="text-2xl font-bold text-primary mb-4">
+            No Showtimes Available
+          </h1>
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">
+            Please check back later
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Showtimes for this movie are not available at the moment. We’re
+            working to update them soon.
+          </p>
+        </div>
+      ) : (
+        <MovieGrid movies={sortedMovies} />
+      )}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 const MovieDetailCard = ({ movie }) => {
   if (!movie) {
-    return <div>No movie data not found</div>;
+    return <div>Movie data not found</div>;
   }
 
   return (
@@ -26,13 +26,7 @@ const MovieDetailCard = ({ movie }) => {
             {movie.duration} mins | Rate: {movie.rate}
           </div>
           <div>Language: {movie.language}</div>
-          <p className="text-left mt-4 pb-3 text-sm">
-            {movie.description} Lorem ipsum dolor sit amet, consectetur
-            adipisicing elit. Sit ratione eveniet, sequi odit architecto,
-            officia non autem accusantium veritatis unde reiciendis. Nam
-            repellendus, autem minima fuga molestias adipisci provident
-            sapiente.
-          </p>
+          <p className="text-left mt-4 pb-3 text-sm">{movie.description}</p>
         </div>
       </div>
     </div>

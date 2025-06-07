@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { OnRegister } from '@/api/auth';
 import { toast } from 'react-toastify';
 import InputField from '../ui/InputField';
 import BtnPrime from '../ui/BtnPrime';
@@ -34,8 +35,8 @@ const RegisterForm = () => {
       return toast.error('Password not match');
     }
     try {
-      const res = await axios.post('http://localhost:8000/api/register', data);
-      toast.success(res.data);
+      const res = await OnRegister(data);
+      toast.success(res.data.message);
       reset();
       navigate('/login');
     } catch (error) {

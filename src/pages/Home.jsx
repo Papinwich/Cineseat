@@ -8,10 +8,10 @@ const Home = () => {
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies]);
-  const filteredMovies = movieList.filter((movie) => {
-    if (movie.status === 'NOW_SHOWING') return movie;
-  });
-  // console.log(filteredMovies);
+
+  const sortedMovies = movieList
+    .filter((movie) => movie.status === 'NOW_SHOWING')
+    .sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
 
   return (
     <div>
@@ -33,7 +33,7 @@ const Home = () => {
           NOW SHOWING
         </h2>
         {/*Movie Grid*/}
-        <MovieGrid movies={filteredMovies} />
+        <MovieGrid movies={sortedMovies} />
       </div>
     </div>
   );

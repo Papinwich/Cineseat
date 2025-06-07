@@ -29,14 +29,23 @@ const getNavLinkClass = ({ isActive }) =>
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col h-screen bg-primary text-slate-100 w-16 lg:w-56">
+    <div className="flex flex-col h-screen bg-primary text-slate-100 w-16 lg:min-w-56">
       {/* Header */}
-      <NavLink
-        to="/admin"
-        className="flex h-16 items-center justify-center bg-creme text-primary text-2xl font-bold md:text-2xl"
-      >
-        <span className="hidden lg:block">CineSeat</span>
-        <span className="block lg:hidden">C</span>
+      <NavLink to="/admin">
+        <div className="hidden lg:flex h-16 items-center justify-center p-2 bg-creme">
+          <img
+            className="object-cover h-10 flex-shrink-0 "
+            src="https://res.cloudinary.com/dnl2ixhcx/image/upload/v1747823168/1_dwxj5f.svg"
+            alt="Logo"
+          />
+        </div>
+        <div className="lg:hidden flex h-16 items-center justify-center p-2 bg-creme">
+          <img
+            className="object-cover h-10 flex-shrink-0 "
+            src="https://res.cloudinary.com/dnl2ixhcx/image/upload/v1747823168/3_egrp2b.svg"
+            alt="Logo"
+          />
+        </div>
       </NavLink>
 
       {/* Navigation Links */}
