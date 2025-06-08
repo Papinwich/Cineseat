@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const MovieCard = ({ movie }) => {
   return (
     <Link to={`/movies/${movie.id}/showtimes`}>
-      <div className="w-full min-w-[200px] max-w-[200px] space-y-1 bg-white rounded-md overflow-hidden shadow-md flex-shrink-0">
+      <div className="w-full min-w-[200px] max-w-[200px] space-y-1 bg-white rounded-md overflow-hidden shadow-md flex-shrink-0 hover:scale-101">
         {/* Poster */}
         <img
           className="w-full h-[300px] object-cover flex-shrink-0"

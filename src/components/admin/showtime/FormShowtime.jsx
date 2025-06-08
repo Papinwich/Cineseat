@@ -52,8 +52,8 @@ const FormShowtime = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      console.log(data.screenId);
+      // console.log(data);
+      // console.log(data.screenId);
       const res = await createShowtime(token, data);
       fetchShowtimes();
       toast.success(res.data.message);

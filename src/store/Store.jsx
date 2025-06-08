@@ -76,8 +76,8 @@ const store = (set) => ({
       selectedSeats: state.selectedSeats.some(
         (selected) => selected.id === seat.id
       )
-        ? state.selectedSeats.filter((selected) => selected.id !== seat.id)
-        : [...state.selectedSeats, seat],
+        ? state.selectedSeats.filter((selected) => selected.id !== seat.id) //ุถ้ามี selected อยู่ใน array selectedSeats ก็ filter ตัวมันเองออก
+        : [...state.selectedSeats, seat], // ถ้ายังไม่มี (false) ก็เอาอันที่กดเลือกใส่เพิ่มเข้าไป
     })),
   // Action to reset selected seats
   resetSelectedSeats: () => set({ selectedSeats: [] }),
